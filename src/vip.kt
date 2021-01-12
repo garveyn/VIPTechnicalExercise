@@ -16,7 +16,7 @@ fun main() {
     val partThreeSolution = sameComboPairs(inputList)
 
     /* This section was made to test the requirements based on the given arrays. The test values were hard coded and
-        formatted the way Kotlin Lists print.  */
+        formatted the way Kotlin Lists print. If a custom list was used, the solutions are printed on their own. */
 
     if (inputList == defaultList) {
 
@@ -37,6 +37,7 @@ fun main() {
 
 }
 
+// Solution 1
 fun allPairs(inputList: List<Int>): List<List<Int>> {
 
     return inputList.mapIndexed { i, value ->
@@ -46,15 +47,20 @@ fun allPairs(inputList: List<Int>): List<List<Int>> {
     }.flatten()
 }
 
+// Wrapper function for solution 2
 fun uniquePairs(inputList: List<Int>): List<List<Int>> {
-
     return pairOnlyOnce(inputList, sameCombo = false)
 }
 
+// Wrapper function for solution 3
 fun sameComboPairs(inputList: List<Int>): List<List<Int>> {
     return pairOnlyOnce(inputList, sameCombo = true)
 }
 
+/* Solution 2 & 3 shared code. List is sorted, and then attempts pairs from the high end
+*   and low end simultaneously that sum up to 10. This saves time over searching for each
+*   pair through brute force.
+*/
 fun pairOnlyOnce(inputList: List<Int>, sameCombo: Boolean): List<List<Int>> {
     val sortedList = inputList.sorted()
     val solution: MutableSet<List<Int>> = mutableSetOf()
@@ -66,9 +72,10 @@ fun pairOnlyOnce(inputList: List<Int>, sameCombo: Boolean): List<List<Int>> {
         val lowValue = sortedList[lowIndex]
         val highValue = sortedList[highIndex]
 
-        // When the sum == 10, add it to the list.
-        //      Otherwise, decrement highIndex if the sum was too high
-        //      or increment the low index if the sum was too low
+        /* When the sum == 10, add it to the list.
+         *  Otherwise, decrement highIndex if the sum was too high
+         *  or increment the low index if the sum was too low
+         */
         when (lowValue + highValue) {
             10 -> {
                 // Add paris going both ways if looking for solution #2
@@ -88,6 +95,9 @@ fun pairOnlyOnce(inputList: List<Int>, sameCombo: Boolean): List<List<Int>> {
     return solution.toList()
 }
 
+/* Parses user input and returns lists they can create.
+ * If no list is provided, this returns null.
+ */
 fun parseInput() : List<Int>? {
 
     println("Enter list to pair, or press enter to use default list\n" +
